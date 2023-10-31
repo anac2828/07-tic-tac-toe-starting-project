@@ -1,14 +1,12 @@
-// import GameboardButton from '../features/GameboardButton';
+import { useGameboard } from '../context/GameboardContext';
 import Row from './Row';
-import { useContext } from 'react';
-import { useGameContext } from '../App';
 
 function Gameboard() {
-  const context = useContext(useGameContext);
-  console.log(context);
+  const { gameboard } = useGameboard();
+
   return (
     <ol id='game-board'>
-      {initialGameboard.map((row, rowIndex) => (
+      {gameboard.map((row, rowIndex) => (
         <Row key={rowIndex} row={row} rowIndex={rowIndex} />
       ))}
     </ol>

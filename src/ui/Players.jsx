@@ -1,10 +1,12 @@
+import { useGameboard } from '../context/GameboardContext';
 import Player from '../features/Player';
 
 function Players() {
+  const { playerOne, playerTwo, playerOneSymbol, playerTwoSymbol } = useGameboard();
   return (
     <ol id='players'>
-      <Player initialName='Player 1' symbol='X' />
-      <Player initialName='Player 2' symbol='O' />
+      <Player initialName={playerOne} symbol={playerOneSymbol} />
+      <Player initialName={playerTwo} symbol={playerTwoSymbol} />
     </ol>
   );
 }

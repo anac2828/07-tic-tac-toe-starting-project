@@ -1,16 +1,17 @@
 import { useState } from 'react';
+import { useGameboard } from '../context/GameboardContext';
 
 function Player({ initialName, symbol }) {
   const [playerName, setPlayerName] = useState(initialName);
-  const [isEditing, setIsEditing] = useState(false);
+  const { isEditing } = useGameboard();
 
-  function handleChange(e) {
-    setPlayerName(e.target.value);
-  }
+  // function handleChange(e) {
+  //   setPlayerName(e.target.value);
+  // }
 
-  function handleClick() {
-    setIsEditing((editing) => !editing);
-  }
+  // function handleClick() {
+  //   setIsEditing((editing) => !editing);
+  // }
 
   return (
     <li>
