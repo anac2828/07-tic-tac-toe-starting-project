@@ -1,7 +1,7 @@
-function GameboardButton({ rowIndex, colIndex }) {
+function GameboardButton({ rowIndex, colIndex, onClick }) {
   return (
     <li>
-      <button onClick={() => console.log(rowIndex, colIndex)}></button>
+      <button onClick={() => onClick(rowIndex, colIndex)}></button>
     </li>
   );
 }

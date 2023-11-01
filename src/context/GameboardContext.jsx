@@ -39,7 +39,11 @@ function GameboardProvider({ children }) {
       payload: { index, name, isEditing: !players[index].isEditing },
     });
   }
-  console.log(players);
+
+  function updateBoard(rowIndex, colIndex) {
+    console.log(rowIndex, colIndex);
+  }
+
   return (
     <GameboardContext.Provider
       value={{
@@ -47,6 +51,7 @@ function GameboardProvider({ children }) {
         players,
         gameboard,
         editPlayerName,
+        updateBoard,
       }}>
       {children}
     </GameboardContext.Provider>
