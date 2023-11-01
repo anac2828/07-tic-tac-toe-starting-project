@@ -1,24 +1,30 @@
 import { useState } from 'react';
 import { useGameboard } from '../context/GameboardContext';
 
-function Player({ initialName, symbol }) {
-  const [playerName, setPlayerName] = useState(initialName);
-  const { isEditing } = useGameboard();
+function Player({ index }) {
+  const { players, editPlayerName } = useGameboard();
+  const [playerName, setPlayerName] = useState(players[index].name);
 
-  // function handleChange(e) {
-  //   setPlayerName(e.target.value);
-  // }
+  const { name, playerSymbol, isEditing } = players[index];
 
-  // function handleClick() {
-  //   setIsEditing((editing) => !editing);
-  // }
+  function handleChange(e) {
+    setPlayerName(e.target.value);
+  }
+
+  function handleClick() {
+    editPlayerName(index, playerName);
+    console.log(index);
+  }
 
   return (
     <li>
       <span className='player'>
+        {/* DISPLAY INPUT */}
         {isEditing && <input type='text' value={playerName} onChange={handleChange} />}
+        {/* DISPLAY NAME */}
         {!isEditing && <span className='player-name'>{playerName}</span>}
-        <span className='player-symbol'>{symbol}</span>
+        {/* SYMBOL */}
+        <span className='player-symbol'>{playerSymbol}</span>
       </span>
       <button onClick={handleClick}>{isEditing ? 'Save' : 'Edit'}</button>
     </li>

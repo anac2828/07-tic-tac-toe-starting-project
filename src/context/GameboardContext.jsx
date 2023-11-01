@@ -9,51 +9,44 @@ const initialState = {
     Array.from({ length: arrayLength }, (v, i) => null)
   ),
   status: 'loading',
-  player: ['Player 1', 'Player 2'],
-  playerOneSymbol: 'X',
-  playerTwoSymbol: 'O',
-  isEditing: false,
+  players: [
+    { name: 'Player 1', playerSymbol: 'X', isEditing: false },
+    { name: 'Player 2', playerSymbol: 'O', isEditing: false },
+  ],
 };
 
 function reducer(state, action) {
   switch (action.type) {
     case 'editName': {
-      return { ...state, player[action.payload.player]: action.payload.name };
+      return {
+        ...state,
+        players: state.players.toSpliced(action.payload.index, 1, {
+          ...state.players[action.payload.index],
+          name: action.payload.name,
+          isEditing: action.payload.isEditing,
+        }),
+      };
     }
   }
 }
 
 function GameboardProvider({ children }) {
-  const [
-    {
-      status,
-      playerOne,
-      playerTwo,
-      playerOneSymbol,
-      playerTwoSymbol,
-      isEditing,
-      gameboard,
-    }, dispatch,
-  ] = useReducer(reducer, initialState);
+  const [{ status, players, gameboard }, dispatch] = useReducer(reducer, initialState);
 
-  function editPlayerName(player, name) {
-    dispatch({type: 'editName', payload: {player, name}})
+  function editPlayerName(index, name) {
+    dispatch({
+      type: 'editName',
+      payload: { index, name, isEditing: !players[index].isEditing },
+    });
   }
-
-  function handleClick() {
-    // setIsEditing((editing) => !editing);
-  }
-
+  console.log(players);
   return (
     <GameboardContext.Provider
       value={{
         status,
-        playerOne,
-        playerTwo,
-        playerOneSymbol,
-        playerTwoSymbol,
-        isEditing,
+        players,
         gameboard,
+        editPlayerName,
       }}>
       {children}
     </GameboardContext.Provider>
