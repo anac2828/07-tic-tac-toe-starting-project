@@ -27,6 +27,18 @@ function reducer(state, action) {
         }),
       };
     }
+    case 'updateSquare': {
+      const { rowIndex, colIndex, symbol } = action.payload;
+      // row with updated square
+      const squareToUpdate = state.gameboard[rowIndex].toSpliced(colIndex, 1, symbol);
+      //gameboard with updated row
+      const rowToUpdate = state.gameboard.toSpliced(rowIndex, 1, squareToUpdate);
+
+      return {
+        ...state,
+        gameboard: rowToUpdate,
+      };
+    }
   }
 }
 
@@ -41,7 +53,10 @@ function GameboardProvider({ children }) {
   }
 
   function updateBoard(rowIndex, colIndex) {
-    console.log(rowIndex, colIndex);
+    dispatch({
+      type: 'updateSquare',
+      payload: { rowIndex, colIndex, symbol: 'X' },
+    });
   }
 
   return (

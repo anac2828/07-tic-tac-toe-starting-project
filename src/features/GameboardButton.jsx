@@ -1,7 +1,12 @@
+import { useGameboard } from '../context/GameboardContext';
+
 function GameboardButton({ rowIndex, colIndex, onClick }) {
+  const { gameboard } = useGameboard();
   return (
     <li>
-      <button onClick={() => onClick(rowIndex, colIndex)}></button>
+      <button onClick={() => onClick(rowIndex, colIndex)}>
+        {gameboard[rowIndex][colIndex]}
+      </button>
     </li>
   );
 }
