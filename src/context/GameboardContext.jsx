@@ -10,54 +10,72 @@ const initialState = {
   ),
   status: 'loading',
   players: [
-    { name: 'Player 1', playerSymbol: 'X', isEditing: false },
-    { name: 'Player 2', playerSymbol: 'O', isEditing: false },
+    { name: 'Player 1', playerSymbol: 'X', isEditing: false, isActive: false },
+    { name: 'Player 2', playerSymbol: 'O', isEditing: false, isActive: false },
   ],
+  activePlayer: '',
 };
 
 function reducer(state, action) {
   switch (action.type) {
     case 'editName': {
+      const { index, name, isEditing, isActive } = action.payload;
       return {
         ...state,
-        players: state.players.toSpliced(action.payload.index, 1, {
-          ...state.players[action.payload.index],
-          name: action.payload.name,
-          isEditing: action.payload.isEditing,
+        players: state.players.toSpliced(index, 1, {
+          ...state.players[index],
+          name,
+          isEditing,
+          isActive,
         }),
       };
     }
     case 'updateSquare': {
-      const { rowIndex, colIndex, symbol } = action.payload;
+      const { rowIndex, colIndex, activePlayer } = action.payload;
       // row with updated square
-      const squareToUpdate = state.gameboard[rowIndex].toSpliced(colIndex, 1, symbol);
+      const squareToUpdate = state.gameboard[rowIndex].toSpliced(
+        colIndex,
+        1,
+        activePlayer
+      );
       //gameboard with updated row
       const rowToUpdate = state.gameboard.toSpliced(rowIndex, 1, squareToUpdate);
 
       return {
         ...state,
         gameboard: rowToUpdate,
+        activePlayer,
       };
     }
   }
 }
 
 function GameboardProvider({ children }) {
-  const [{ status, players, gameboard }, dispatch] = useReducer(reducer, initialState);
+  const [{ status, players, activePlayer, gameboard }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
   function editPlayerName(index, name) {
     dispatch({
       type: 'editName',
-      payload: { index, name, isEditing: !players[index].isEditing },
+      payload: {
+        index,
+        name,
+        isEditing: !players[index].isEditing,
+        isActive: index === 0 ? true : false,
+      },
     });
   }
 
   function updateBoard(rowIndex, colIndex) {
     dispatch({
       type: 'updateSquare',
-      payload: { rowIndex, colIndex, symbol: 'X' },
+      payload: { rowIndex, colIndex, activePlayer: activePlayer === 'X' ? 'O' : 'X' },
     });
   }
+
+  function setActivePlayer() {}
 
   return (
     <GameboardContext.Provider
@@ -67,6 +85,7 @@ function GameboardProvider({ children }) {
         gameboard,
         editPlayerName,
         updateBoard,
+        setActivePlayer,
       }}>
       {children}
     </GameboardContext.Provider>
