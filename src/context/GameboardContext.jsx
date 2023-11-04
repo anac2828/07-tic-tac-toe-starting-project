@@ -10,28 +10,28 @@ const initialState = {
   ),
   status: 'loading',
   players: [
-    { name: 'Player 1', playerSymbol: 'X', isEditing: false, isActive: false },
-    { name: 'Player 2', playerSymbol: 'O', isEditing: false, isActive: false },
+    { name: 'Player 1', playerSymbol: 'X', isEditing: false },
+    { name: 'Player 2', playerSymbol: 'O', isEditing: false },
   ],
-  activePlayer: '',
+  activePlayer: 'X',
 };
 
 function reducer(state, action) {
   switch (action.type) {
     case 'editName': {
-      const { index, name, isEditing, isActive } = action.payload;
+      const { index, name, isEditing } = action.payload;
       return {
         ...state,
         players: state.players.toSpliced(index, 1, {
           ...state.players[index],
           name,
           isEditing,
-          isActive,
         }),
       };
     }
     case 'updateSquare': {
       const { rowIndex, colIndex, activePlayer } = action.payload;
+
       // row with updated square
       const squareToUpdate = state.gameboard[rowIndex].toSpliced(
         colIndex,
@@ -56,6 +56,8 @@ function GameboardProvider({ children }) {
     initialState
   );
 
+  console.log('active', activePlayer);
+
   function editPlayerName(index, name) {
     dispatch({
       type: 'editName',
@@ -63,7 +65,6 @@ function GameboardProvider({ children }) {
         index,
         name,
         isEditing: !players[index].isEditing,
-        isActive: index === 0 ? true : false,
       },
     });
   }
@@ -75,8 +76,6 @@ function GameboardProvider({ children }) {
     });
   }
 
-  function setActivePlayer() {}
-
   return (
     <GameboardContext.Provider
       value={{
@@ -85,7 +84,7 @@ function GameboardProvider({ children }) {
         gameboard,
         editPlayerName,
         updateBoard,
-        setActivePlayer,
+        activePlayer,
       }}>
       {children}
     </GameboardContext.Provider>

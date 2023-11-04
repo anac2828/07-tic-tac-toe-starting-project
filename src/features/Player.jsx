@@ -4,7 +4,6 @@ import { useGameboard } from '../context/GameboardContext';
 function Player({ index }) {
   const { players, activePlayer, editPlayerName } = useGameboard();
   const [playerName, setPlayerName] = useState(players[index].name);
-
   const { playerSymbol, isEditing } = players[index];
 
   function handleChange(e) {
@@ -16,7 +15,7 @@ function Player({ index }) {
   }
 
   return (
-    <li className={activePlayer === 'X' || activePlayer === 'O' ? 'active' : ''}>
+    <li className={activePlayer === playerSymbol ? 'active' : ''}>
       <span className='player'>
         {/* DISPLAY INPUT */}
         {isEditing && <input type='text' value={playerName} onChange={handleChange} />}
