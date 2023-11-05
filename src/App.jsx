@@ -1,5 +1,6 @@
 import { useGameboard } from './context/GameboardContext';
 import Gameboard from './ui/Gameboard';
+import Log from './ui/Log';
 import Players from './ui/Players';
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
         <Players />
         <Gameboard />
       </div>
+      <Log />
     </main>
   );
 }
