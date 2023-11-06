@@ -2,7 +2,7 @@ import { useGameboard } from '../context/GameboardContext';
 import GameboardButton from '../features/GameboardButton';
 
 function Row({ row, rowIndex }) {
-  const { updateBoard } = useGameboard();
+  const { updateBoard, updateLog } = useGameboard();
 
   function handleClick(rowIndex, colIndex) {
     updateBoard(rowIndex, colIndex);

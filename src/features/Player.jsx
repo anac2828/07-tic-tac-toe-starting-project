@@ -15,7 +15,7 @@ function Player({ index }) {
   }
 
   return (
-    <li className={activePlayer === playerSymbol ? 'active' : ''}>
+    <li className={activePlayer !== playerSymbol ? 'active' : ''}>
       <span className='player'>
         {/* DISPLAY INPUT */}
         {isEditing && <input type='text' value={playerName} onChange={handleChange} />}

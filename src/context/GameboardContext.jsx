@@ -13,7 +13,10 @@ const initialState = {
     { name: 'Player 1', playerSymbol: 'X', isEditing: false },
     { name: 'Player 2', playerSymbol: 'O', isEditing: false },
   ],
-  activePlayer: 'X',
+  activePlayer: 'O',
+  rowIndex: '',
+  colIndex: '',
+  logs: [],
 };
 
 function reducer(state, action) {
@@ -45,18 +48,17 @@ function reducer(state, action) {
         ...state,
         gameboard: rowToUpdate,
         activePlayer,
+        logs: state.logs.toSpliced(0, 0, { activePlayer, rowIndex, colIndex }),
       };
     }
   }
 }
 
 function GameboardProvider({ children }) {
-  const [{ status, players, activePlayer, gameboard }, dispatch] = useReducer(
+  const [{ status, players, activePlayer, gameboard, logs }, dispatch] = useReducer(
     reducer,
     initialState
   );
-
-  console.log('active', activePlayer);
 
   function editPlayerName(index, name) {
     dispatch({
@@ -85,6 +87,7 @@ function GameboardProvider({ children }) {
         editPlayerName,
         updateBoard,
         activePlayer,
+        logs,
       }}>
       {children}
     </GameboardContext.Provider>

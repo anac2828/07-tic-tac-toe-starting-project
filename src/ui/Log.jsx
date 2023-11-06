@@ -1,5 +1,17 @@
+import { useGameboard } from '../context/GameboardContext';
+
 function Log() {
-  return <ol id='log'></ol>;
+  const { logs } = useGameboard();
+
+  return (
+    <ol id='log'>
+      {logs.map((log) => (
+        <li key={Math.random()}>
+          {log.activePlayer} selected {log.rowIndex},{log.colIndex}
+        </li>
+      ))}
+    </ol>
+  );
 }
 
 export default Log;
