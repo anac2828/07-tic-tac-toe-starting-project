@@ -17,6 +17,7 @@ const initialState = {
   rowIndex: '',
   colIndex: '',
   logs: [],
+  winner: '',
 };
 
 function reducer(state, action) {
@@ -52,9 +53,30 @@ function reducer(state, action) {
       };
     }
     case 'checkWinner': {
-      const { rowIndex } = action.payload;
+      const { rowIndex, colIndex } = action.payload;
+      const checkForWinner = (value) => value === state.activePlayer;
 
-      console.log(state.gameboard[rowIndex]);
+      // check for winner in a row
+      const isRowWinner = state.gameboard[rowIndex].every(checkForWinner);
+
+      // check for winner in a column
+      const isColWinner = state.gameboard
+        .map((row) => row[colIndex])
+        .every(checkForWinner);
+
+      // check for winner diagonal
+      const crossTopRightBottom = state.gameboard
+        .map((row, index) => row[index])
+        .every(checkForWinner);
+      const crossTopLeftBottom = state.gameboard
+        .map((row, index) => row.toReversed()[index])
+        .every(checkForWinner);
+
+      const isDiagonalWinner = crossTopRightBottom || crossTopLeftBottom;
+
+      if (isRowWinner || isColWinner || isDiagonalWinner) {
+        return { ...state, isWinner: activePlayer };
+      }
       return { ...state };
     }
   }
@@ -84,8 +106,8 @@ function GameboardProvider({ children }) {
     });
   }
 
-  function checkWinner(rowIndex) {
-    dispatch({ type: 'checkWinner', payload: { rowIndex } });
+  function checkWinner(rowIndex, colIndex) {
+    dispatch({ type: 'checkWinner', payload: { rowIndex, colIndex } });
   }
 
   return (

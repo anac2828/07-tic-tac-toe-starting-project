@@ -1,12 +1,12 @@
 import { useGameboard } from '../context/GameboardContext';
-import GameboardButton from '../features/GameboardButton';
+import GameboardButton from './GameboardButton';
 
 function Row({ row, rowIndex }) {
   const { updateBoard, checkWinner } = useGameboard();
 
   function handleClick(rowIndex, colIndex) {
     updateBoard(rowIndex, colIndex);
-    checkWinner(rowIndex);
+    checkWinner(rowIndex, colIndex);
   }
   return (
     <li>

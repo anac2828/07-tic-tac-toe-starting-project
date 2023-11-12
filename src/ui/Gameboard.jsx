@@ -1,5 +1,5 @@
 import { useGameboard } from '../context/GameboardContext';
-import Row from './Row';
+import Row from '../features/Row';
 
 function Gameboard() {
   const { gameboard } = useGameboard();
