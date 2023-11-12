@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useState } from 'react';
+import { createContext, useContext, useReducer } from 'react';
 
 const GameboardContext = createContext();
 
@@ -51,6 +51,12 @@ function reducer(state, action) {
         logs: state.logs.toSpliced(0, 0, { activePlayer, rowIndex, colIndex }),
       };
     }
+    case 'checkWinner': {
+      const { rowIndex } = action.payload;
+
+      console.log(state.gameboard[rowIndex]);
+      return { ...state };
+    }
   }
 }
 
@@ -78,16 +84,21 @@ function GameboardProvider({ children }) {
     });
   }
 
+  function checkWinner(rowIndex) {
+    dispatch({ type: 'checkWinner', payload: { rowIndex } });
+  }
+
   return (
     <GameboardContext.Provider
       value={{
         status,
         players,
         gameboard,
+        logs,
         editPlayerName,
         updateBoard,
+        checkWinner,
         activePlayer,
-        logs,
       }}>
       {children}
     </GameboardContext.Provider>

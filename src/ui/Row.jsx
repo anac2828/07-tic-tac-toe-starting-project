@@ -2,15 +2,16 @@ import { useGameboard } from '../context/GameboardContext';
 import GameboardButton from '../features/GameboardButton';
 
 function Row({ row, rowIndex }) {
-  const { updateBoard, updateLog } = useGameboard();
+  const { updateBoard, checkWinner } = useGameboard();
 
   function handleClick(rowIndex, colIndex) {
     updateBoard(rowIndex, colIndex);
+    checkWinner(rowIndex);
   }
   return (
     <li>
       <ol>
-        {row.map((playerSymbol, index) => (
+        {row.map((_, index) => (
           <GameboardButton
             key={1 + index}
             rowIndex={rowIndex}
