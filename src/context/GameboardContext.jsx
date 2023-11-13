@@ -75,7 +75,12 @@ function reducer(state, action) {
       const isDiagonalWinner = crossTopRightBottom || crossTopLeftBottom;
 
       if (isRowWinner || isColWinner || isDiagonalWinner) {
-        return { ...state, isWinner: activePlayer };
+        return {
+          ...state,
+          winner: state.players.find(
+            (player) => player.playerSymbol === state.activePlayer
+          ).name,
+        };
       }
       return { ...state };
     }
@@ -83,10 +88,8 @@ function reducer(state, action) {
 }
 
 function GameboardProvider({ children }) {
-  const [{ status, players, activePlayer, gameboard, logs }, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
+  const [{ status, players, activePlayer, gameboard, logs, winner }, dispatch] =
+    useReducer(reducer, initialState);
 
   function editPlayerName(index, name) {
     dispatch({
@@ -117,6 +120,7 @@ function GameboardProvider({ children }) {
         players,
         gameboard,
         logs,
+        winner,
         editPlayerName,
         updateBoard,
         checkWinner,

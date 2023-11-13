@@ -4,10 +4,13 @@ import Log from './ui/Log';
 import Players from './ui/Players';
 
 function App() {
+  const { winner } = useGameboard();
+
   return (
     <main>
       <div id='game-container'>
         <Players />
+        {winner && <p>You won, {winner}!</p>}
         <Gameboard />
       </div>
       <Log />
