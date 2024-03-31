@@ -1,7 +1,4 @@
-import useGameboard from '../context/GameboardContext';
-
-function GameOver() {
-  const { winner } = useGameboard();
+function GameOver({ winner }) {
   return (
     <div id='game-over'>
       <h2>Game Over!</h2>

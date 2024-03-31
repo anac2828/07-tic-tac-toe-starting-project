@@ -1,4 +1,5 @@
 import { useGameboard } from './context/GameboardContext';
+import GameOver from './features/GameOver';
 import Gameboard from './ui/Gameboard';
 import Log from './ui/Log';
 import Players from './ui/Players';
@@ -10,7 +11,7 @@ function App() {
     <main>
       <div id='game-container'>
         <Players />
-        {winner && <p>You won, {winner}!</p>}
+        {winner && <GameOver winner={winner} />}
         <Gameboard />
       </div>
       <Log />

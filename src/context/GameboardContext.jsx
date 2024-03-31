@@ -80,6 +80,7 @@ function reducer(state, action) {
           winner: state.players.find(
             (player) => player.playerSymbol === state.activePlayer
           ).name,
+          status: 'Gameover',
         };
       }
       return { ...state };
