@@ -2,6 +2,7 @@ import { useGameboard } from '../context/GameboardContext';
 import Row from '../features/Row';
 
 function Gameboard() {
+  // array to make the rows and columns
   const { gameboard } = useGameboard();
 
   return (

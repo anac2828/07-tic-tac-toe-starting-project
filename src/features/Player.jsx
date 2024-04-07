@@ -2,8 +2,11 @@ import { useState } from 'react';
 import { useGameboard } from '../context/GameboardContext';
 
 function Player({ index }) {
+  // gameboard context
   const { players, activePlayer, editPlayerName } = useGameboard();
+  //updates state on gameboard
   const [playerName, setPlayerName] = useState(players[index].name);
+  // from initial state
   const { playerSymbol, isEditing } = players[index];
 
   function handleChange(e) {

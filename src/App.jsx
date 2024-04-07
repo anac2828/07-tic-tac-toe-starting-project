@@ -5,13 +5,13 @@ import Log from './ui/Log';
 import Players from './ui/Players';
 
 function App() {
-  const { winner } = useGameboard();
+  const { status } = useGameboard();
 
   return (
     <main>
       <div id='game-container'>
         <Players />
-        {winner && <GameOver winner={winner} />}
+        {status === 'Gameover' && <GameOver />}
         <Gameboard />
       </div>
       <Log />

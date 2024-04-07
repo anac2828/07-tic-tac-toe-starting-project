@@ -8,7 +8,7 @@ const initialState = {
   gameboard: Array.from({ length: arrayLength }, (v, i) =>
     Array.from({ length: arrayLength }, (v, i) => null)
   ),
-  status: 'loading',
+  status: 'ready',
   players: [
     { name: 'Player 1', playerSymbol: 'X', isEditing: false },
     { name: 'Player 2', playerSymbol: 'O', isEditing: false },
@@ -20,9 +20,11 @@ const initialState = {
   winner: '',
 };
 
+// action comes from the dispatch function
 function reducer(state, action) {
   switch (action.type) {
     case 'editName': {
+      // player index, name, isEditing = true
       const { index, name, isEditing } = action.payload;
       return {
         ...state,
@@ -54,6 +56,7 @@ function reducer(state, action) {
     }
     case 'checkWinner': {
       const { rowIndex, colIndex } = action.payload;
+
       const checkForWinner = (value) => value === state.activePlayer;
 
       // check for winner in a row
@@ -68,6 +71,7 @@ function reducer(state, action) {
       const crossTopRightBottom = state.gameboard
         .map((row, index) => row[index])
         .every(checkForWinner);
+
       const crossTopLeftBottom = state.gameboard
         .map((row, index) => row.toReversed()[index])
         .every(checkForWinner);
@@ -82,13 +86,32 @@ function reducer(state, action) {
           ).name,
           status: 'Gameover',
         };
+      } else if (state.logs.length === 9) {
+        return {
+          ...state,
+          winner: 'Tie Game',
+          status: 'Gameover',
+        };
+      } else {
+        return { ...state };
       }
-      return { ...state };
+    }
+    case 'rematch': {
+      return {
+        ...state,
+        gameboard: Array.from({ length: arrayLength }, (v, i) =>
+          Array.from({ length: arrayLength }, (v, i) => null)
+        ),
+        logs: [],
+        activePlayer: 'O',
+        status: 'ready',
+      };
     }
   }
 }
 
 function GameboardProvider({ children }) {
+  // useReducer takes the reducer function and the initial state. Returns the state and dispatch function to dispatch the action and payload to the reducer funcion
   const [{ status, players, activePlayer, gameboard, logs, winner }, dispatch] =
     useReducer(reducer, initialState);
 
@@ -114,6 +137,10 @@ function GameboardProvider({ children }) {
     dispatch({ type: 'checkWinner', payload: { rowIndex, colIndex } });
   }
 
+  function rematch() {
+    dispatch({ type: 'rematch' });
+  }
+
   return (
     <GameboardContext.Provider
       value={{
@@ -126,6 +153,7 @@ function GameboardProvider({ children }) {
         updateBoard,
         checkWinner,
         activePlayer,
+        rematch,
       }}>
       {children}
     </GameboardContext.Provider>
